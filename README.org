@@ -1,0 +1,17 @@
+#+startup: indent
+
+* An android launcher for personal use
+
+* what it currently looks like
+
+[[./screenshots/v0/1.jpg]]
+[[./screenshots/v0/2.jpg]]
+
+
+
+* next
+- scoollbar with clickable letters
+- settings to set apps
+- background
+- spalsh screen
+- sun mode
