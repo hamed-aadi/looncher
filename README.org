@@ -1,8 +1,4 @@
-#+BEGIN_CENTER
-===============================
 launch0 V0.1
-===============================
-#+END_CENTER
 
 *** About
 An android launcher for personal use
