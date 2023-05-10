@@ -1,15 +1,22 @@
-#+startup: indent
+#+BEGIN_CENTER
+===============================
+launch0 V0.1
+===============================
+#+END_CENTER
 
-* An android launcher for personal use
+*** About
+An android launcher for personal use
 
-* what it currently looks like
+
+*** what it currently looks like
 
 [[./screenshots/v0/1.jpg]]
 [[./screenshots/v0/2.jpg]]
 
+*** ChangeLog
 
 
-* next
+*** next
 - scoollbar with clickable letters
 - settings to set apps
 - background
