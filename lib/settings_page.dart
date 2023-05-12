@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'settings_main_apps_page.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -16,40 +15,9 @@ class SettingsPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20),
               child: const Text("Settings", style: TextStyle(fontSize: 32))),
-            FavAppsChooser()
           ],
       )),
     );
-  }
-}
-
-class FavAppsChooser extends StatefulWidget {
-  const FavAppsChooser({super.key});
-  @override
-  State<FavAppsChooser> createState() => _FavAppsChooserState();
-}
-
-class _FavAppsChooserState extends State<FavAppsChooser> {
-  
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          SettingItem(
-            name: "Main Apps",
-            description: "apps that show on the home screen ",
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SettingsMainAppsPage()));
-          }),
-          SettingItem(
-            name: "Other Thing",
-            description: "a thing that changes another thing",
-            onPressed: () {})
-          ],
-        ));
   }
 }
 
@@ -59,8 +27,7 @@ class SettingItem extends StatelessWidget {
   final String description;
   // add checkbox
 
-  final TextStyle headerText =
-  const TextStyle(fontSize: 20, color: Colors.white);
+  final TextStyle headerText = const TextStyle(fontSize: 20, color: Colors.white);
   final TextStyle descriptionText = const TextStyle(
     fontSize: 16, overflow: TextOverflow.visible, color: Colors.white70);
 

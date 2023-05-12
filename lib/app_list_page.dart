@@ -33,7 +33,6 @@ class _AppListPageState extends State<AppListPage> {
       result = Apps.appsList.where(
         (element) => element.name!.toLowerCase().contains(keyword.toLowerCase())).toList();
     }
-    
     setState(() {
         filteredApps = result;
     });
@@ -58,10 +57,10 @@ class _AppListPageState extends State<AppListPage> {
               child: TextField(
                 autofocus: widget.focusSearch,
                 onChanged: (value) => _filter(value),
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                    border: InputBorder.none,
-                    hintText: 'Search'),
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                  border: InputBorder.none,
+                  hintText: 'Search'),
               )
             ),
             
@@ -87,39 +86,38 @@ class AppsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      child: Scrollbar(
-        thickness: 5,
-        thumbVisibility: true,
-        child: ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(10),
-          itemCount: appInfoList.length,
-          itemBuilder: (context, index) {
-            AppInfo app = appInfoList[index];
-            print(app.packageName);
-            return InkWell(
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                // mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(15),
-                    child: Image.memory(
-                      app.icon!,
-                      fit: BoxFit.contain,
-                      width: 40,
-                  )),
-                  Text(
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          mainAxisSpacing: 15,
+        ),
+        physics: const AlwaysScrollableScrollPhysics(),
+        itemCount: appInfoList.length,
+        itemBuilder: (context, index) {
+          AppInfo app = appInfoList[index];
+          return InkWell(
+            child: Column(
+              children: [
+                Container(
+                  width: 80,
+                  padding: const EdgeInsets.all(10),
+                  child: Image.memory(
+                    app.icon!,
+                    fit: BoxFit.contain,
+                )),
+                SizedBox(
+                  width: 90,
+                  child:Text(
                     app.name!,
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 1)
-              ]),
-              onTap: () => InstalledApps.startApp(app.packageName!),
-              onLongPress: () =>
-              InstalledApps.openSettings(app.packageName!),
-            );
-    })));
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 10),
+                ))
+            ]),
+            onTap: () => InstalledApps.startApp(app.packageName!),
+            onLongPress: () => InstalledApps.openSettings(app.packageName!),
+          );
+    }));
   }
 }
-
