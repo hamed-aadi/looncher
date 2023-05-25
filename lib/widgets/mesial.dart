@@ -10,7 +10,7 @@ class MesialWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onHorizontalDragEnd: (DragEndDetails details) {
-        if (details.primaryVelocity!.toInt() > 8) {
+        if (details.primaryVelocity!.toInt() > 10) {
           InstalledApps.startApp("com.whatsapp");
         }
       },

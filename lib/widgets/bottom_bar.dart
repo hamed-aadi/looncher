@@ -25,7 +25,7 @@ class _BottomBarState extends State<BottomBar> {
       child: Container(
         height: 60,
         width: double.infinity,
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         // padding: EdgeInsets.all(10),
         // decoration: BoxDecoration(
         color: Colors.transparent,
@@ -51,11 +51,11 @@ class SearchBox extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
-          MaterialPageRoute(builder:
-            (context) => const AppListPage(focusSearch: true)));
+          MaterialPageRoute(
+            builder: (context) => const AppListPage(focusSearch: true)));
       },
       child: Container(
-        margin: EdgeInsets.only(right: 30),
+        margin: const EdgeInsets.only(right: 30),
         decoration: BoxDecoration(
           color: Colors.grey[850],
           border: Border.all(color: Colors.white10, width: 1),
@@ -74,19 +74,17 @@ class MessageIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 60,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.black,
         border: Border.all(color: Colors.white10, width: 2),
         shape: BoxShape.circle),
       child: InkWell(
-        child: Icon(Icons.messenger_outline),
+        child: const Icon(Icons.messenger_outline),
         onTap: () {
           InstalledApps.startApp("com.google.android.apps.messaging");
         }
-      )
-    );
+    ));
   }
 }
 
@@ -96,13 +94,13 @@ class CallIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Colors.black,
         border: Border.all(color: Colors.white10, width: 2),
         shape: BoxShape.circle),
       child: InkWell(
-        child: Icon(Icons.call_rounded),
+        child: const Icon(Icons.call_rounded),
         onTap: () {
           InstalledApps.startApp("com.android.contacts");
         }
@@ -110,6 +108,7 @@ class CallIcon extends StatelessWidget {
   }
 }
 
+/*
 class SpecialButton extends StatelessWidget {
   const SpecialButton({super.key});
   @override
@@ -127,3 +126,5 @@ class SpecialButton extends StatelessWidget {
     ); 
   }
 }
+*/
+
