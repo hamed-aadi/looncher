@@ -14,7 +14,6 @@ class AppListPage extends StatefulWidget {
 }
 
 class _AppListPageState extends State<AppListPage> {
-  @override
 
   List<AppInfo> filteredApps = [];
   

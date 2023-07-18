@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:installed_apps/installed_apps.dart';
 
+import '../main.dart';
 import '../app_list_page.dart';
 
 class BottomBar extends StatefulWidget {
@@ -38,7 +39,6 @@ class _BottomBarState extends State<BottomBar> {
             SearchBox(),
             MessageIcon(),
             CallIcon(),
-            // SpecialButton(),
           ]
     )));
   }
@@ -56,11 +56,7 @@ class SearchBox extends StatelessWidget {
       },
       child: Container(
         margin: const EdgeInsets.only(right: 30),
-        decoration: BoxDecoration(
-          color: Colors.grey[850],
-          border: Border.all(color: Colors.white10, width: 1),
-          borderRadius: BorderRadius.circular(10)),
-        // width: double.infinity,
+        decoration: neuRecEmboss,
         height: 40,
         width: 200,
         padding: const EdgeInsets.all(10),
@@ -75,10 +71,11 @@ class MessageIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        border: Border.all(color: Colors.white10, width: 2),
-        shape: BoxShape.circle),
+      decoration: neuRec,
+      // BoxDecoration(
+      //   color: Colors.black,
+      //   border: Border.all(color: Colors.white10, width: 2),
+      //   shape: BoxShape.circle),
       child: InkWell(
         child: const Icon(Icons.messenger_outline),
         onTap: () {
@@ -95,10 +92,11 @@ class CallIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        border: Border.all(color: Colors.white10, width: 2),
-        shape: BoxShape.circle),
+      decoration: neuRec,
+      // BoxDecoration(
+      //   color: Colors.black,
+      //   border: Border.all(color: Colors.white10, width: 2),
+      //   shape: BoxShape.circle),
       child: InkWell(
         child: const Icon(Icons.call_rounded),
         onTap: () {
@@ -107,24 +105,3 @@ class CallIcon extends StatelessWidget {
     )); 
   }
 }
-
-/*
-class SpecialButton extends StatelessWidget {
-  const SpecialButton({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(2,10,2,10),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        border: Border.all(color: Colors.white10, width: 2),
-        borderRadius: BorderRadius.circular(10),        
-      ),
-      child: InkWell(
-        child: Icon(Icons.more_vert_outlined),
-        onTap: () {})
-    ); 
-  }
-}
-*/
-

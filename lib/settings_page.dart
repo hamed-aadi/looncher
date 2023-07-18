@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/setting_item';
+import 'widgets/setting_item.dart';
 
 
 class SettingsPage extends StatelessWidget {

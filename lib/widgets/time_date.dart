@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:installed_apps/installed_apps.dart';
 
+import '../main.dart';
+
+
 class TimeDate extends StatefulWidget {
   const TimeDate({super.key});
   @override
@@ -30,10 +33,11 @@ class _TimeDateState extends State<TimeDate> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(30),
-      child: SizedBox(
+      child: Container(
+        decoration: neuRec,
         width: 200,
         // color: Colors.grey,
-        // padding: EdgeInsets.fromLTRB(, 10, 1, 1),
+        padding: EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -44,7 +48,7 @@ class _TimeDateState extends State<TimeDate> {
                 style: const TextStyle(fontSize: 40),
             )),
             Text(
-              DateFormat('EEEE, dd MMMM').format(_currentTime),
+              "  ${DateFormat('EEEE, dd MMMM').format(_currentTime)}",
               style: const TextStyle(fontSize: 18),
             )
     ])));

@@ -10,11 +10,6 @@ An android launcher for personal use
 [[./screenshots/v0/2.jpg]]
 
 *** ChangeLog
-
-
-*** next
-- scoollbar with clickable letters
-- settings to set apps
-- background
-- spalsh screen
-- sun mode
+**** V0.2
+- changed apps launcher to grid
+	
