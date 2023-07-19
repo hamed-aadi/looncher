@@ -25,9 +25,9 @@ class _BottomBarState extends State<BottomBar> {
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
-        height: 60,
+        // height: 60,
         width: double.infinity,
-        // padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(10),
         color: Colors.transparent,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -71,7 +71,7 @@ class SearchBox extends StatelessWidget {
         child: Container(
           margin: const EdgeInsets.only(right: 30),
         decoration: neuRecEmboss,
-        height: 40,
+        // height: 40,
         width: 200,
         padding: const EdgeInsets.all(10),
         // color: Colors.green,
@@ -91,6 +91,7 @@ class MessageIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
+      height: 70,
       decoration: convexButton,
       child: InkWell(
         child: const Icon(Icons.messenger_outline),
@@ -109,6 +110,7 @@ class CallIcon extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: convexButton,
+      height: 70,
       // BoxDecoration(
       //   color: Colors.black,
       //   border: Border.all(color: Colors.white10, width: 2),

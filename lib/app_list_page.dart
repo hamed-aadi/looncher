@@ -41,25 +41,36 @@ class _AppListPageState extends State<AppListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        
-        child: Column(
-          children: [
+      body: WillPopScope(
+        onWillPop: () async {
+          return true;
+        },
+        child: SafeArea(
+          child: Column(
+            children: [
             Container(
               // height: 40,
               // width: double.infinity,
               margin: const EdgeInsets.all(20),
               padding:const EdgeInsets.all(0),
               decoration: neuRecEmboss,
-              child: TextField(
-                autofocus: widget.focusSearch,
-                onChanged: (value) => _filter(value),
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                  border: InputBorder.none,
-                  hintText: 'Search'),
-              )
-          ),
+              child: GestureDetector(
+                onVerticalDragUpdate: (details) {
+                  if (details.delta.dy < 20) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder:
+                        (context) => const Launcher()));
+                  }
+                },
+                child: TextField(
+                  autofocus: widget.focusSearch,
+                  onChanged: (value) => _filter(value),
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                    border: InputBorder.none,
+                    hintText: 'Search'),
+              ))
+            ),
             
           Expanded(
               child: SizedBox(
@@ -74,8 +85,8 @@ class _AppListPageState extends State<AppListPage> {
                   },
                   child: AppsList(filteredApps)))),
           ],
-    )));
-  }
+  ))));
+}
 }
 
 class AppsList extends StatelessWidget {

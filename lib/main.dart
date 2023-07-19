@@ -23,7 +23,7 @@ class Launcher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.black,
+        systemNavigationBarColor:  Color(0xFF1d2124),
         systemNavigationBarIconBrightness: Brightness.dark));
     return MaterialApp(
       title: 'Launcher',
