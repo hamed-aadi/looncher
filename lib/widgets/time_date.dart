@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:installed_apps/installed_apps.dart';
 
-import '../main.dart';
+import '../theme.dart';
 
 
 class TimeDate extends StatefulWidget {
@@ -32,25 +32,31 @@ class _TimeDateState extends State<TimeDate> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(30),
+      padding: EdgeInsets.all(20),
       child: Container(
-        decoration: neuRec,
-        width: 200,
+        decoration: box,
+        width: double.infinity,
         // color: Colors.grey,
-        padding: EdgeInsets.all(10),
+        // padding: EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            InkWell(
-              onTap: () => InstalledApps.startApp("com.android.deskclock"),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: InkWell(
+                onTap: () => InstalledApps.startApp("com.android.deskclock"),
+                child: Text(
+                  DateFormat.jm().format(_currentTime),
+                  style: const TextStyle(fontSize: 40),
+            ))),
+            Divider(color: Color(0xFF3F4449), height: 1),
+            Divider(color: Color(0xFF000000), height: 2),
+            Padding(
+              padding: EdgeInsets.all(10),              
               child: Text(
-                DateFormat.jm().format(_currentTime),
-                style: const TextStyle(fontSize: 40),
-            )),
-            Text(
-              "  ${DateFormat('EEEE, dd MMMM').format(_currentTime)}",
+                " ${DateFormat('EEEE, dd MMMM').format(_currentTime)}",
               style: const TextStyle(fontSize: 18),
-            )
-    ])));
+          ))
+  ])));
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:installed_apps/installed_apps.dart';
 
-import '../main.dart';
+import '../theme.dart';
 import '../app_list_page.dart';
 
 class BottomBar extends StatefulWidget {
@@ -24,15 +24,11 @@ class _BottomBarState extends State<BottomBar> {
         }
       },
       child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
         height: 60,
         width: double.infinity,
-        margin: const EdgeInsets.all(10),
         // padding: EdgeInsets.all(10),
-        // decoration: BoxDecoration(
         color: Colors.transparent,
-        //   border: Border.all(color: Colors.white10, width: 1),
-        //   borderRadius: BorderRadius.circular(10)),
-        
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: const <Widget>[
@@ -44,25 +40,49 @@ class _BottomBarState extends State<BottomBar> {
   }
 }
 
+
+Route _createApplistRoute() {
+  return PageRouteBuilder(
+    pageBuilder:
+    (context, animation, secondaryAnimation) => const AppListPage(focusSearch: true),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(0.0, 1.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
+
 class SearchBox extends StatelessWidget {
   const SearchBox({super.key});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const AppListPage(focusSearch: true)));
+        Navigator.of(context).push(_createApplistRoute());
       },
-      child: Container(
-        margin: const EdgeInsets.only(right: 30),
+        child: Container(
+          margin: const EdgeInsets.only(right: 30),
         decoration: neuRecEmboss,
         height: 40,
         width: 200,
         padding: const EdgeInsets.all(10),
         // color: Colors.green,
-        child: const Align(alignment: Alignment.centerLeft, child: Text("Search"))));
-  }
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Search"),
+            Icon(Icons.search)
+          ]
+  )));
+}
 }
 
 class MessageIcon extends StatelessWidget {
@@ -71,11 +91,7 @@ class MessageIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      decoration: neuRec,
-      // BoxDecoration(
-      //   color: Colors.black,
-      //   border: Border.all(color: Colors.white10, width: 2),
-      //   shape: BoxShape.circle),
+      decoration: convexButton,
       child: InkWell(
         child: const Icon(Icons.messenger_outline),
         onTap: () {
@@ -92,7 +108,7 @@ class CallIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      decoration: neuRec,
+      decoration: convexButton,
       // BoxDecoration(
       //   color: Colors.black,
       //   border: Border.all(color: Colors.white10, width: 2),

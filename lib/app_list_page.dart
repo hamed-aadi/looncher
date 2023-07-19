@@ -4,6 +4,7 @@ import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart';
 
 import 'main.dart';
+import 'theme.dart';
 
 class AppListPage extends StatefulWidget {
   final bool focusSearch;
@@ -45,14 +46,11 @@ class _AppListPageState extends State<AppListPage> {
         child: Column(
           children: [
             Container(
-              height: 40,
-              width: double.infinity,
+              // height: 40,
+              // width: double.infinity,
               margin: const EdgeInsets.all(20),
               padding:const EdgeInsets.all(0),
-              decoration: BoxDecoration(
-                color: Colors.grey[700],
-                border: Border.all(color: Colors.white10, width: 1),
-                borderRadius: BorderRadius.circular(10)),
+              decoration: neuRecEmboss,
               child: TextField(
                 autofocus: widget.focusSearch,
                 onChanged: (value) => _filter(value),
@@ -61,17 +59,20 @@ class _AppListPageState extends State<AppListPage> {
                   border: InputBorder.none,
                   hintText: 'Search'),
               )
-            ),
+          ),
             
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: () {
-                  Apps.getApps();
-                  filteredApps = Apps.appsList;                  
-                  setState(() {});
-                  return Future<void>.delayed(const Duration(seconds: 0));
-                },
-                child: AppsList(filteredApps))),
+          Expanded(
+              child: SizedBox(
+                width: double.infinity,
+                height: 500,
+                child:RefreshIndicator(
+                  onRefresh: () {
+                    Apps.getApps();
+                    filteredApps = Apps.appsList;                  
+                    setState(() {});
+                    return Future<void>.delayed(const Duration(seconds: 0));
+                  },
+                  child: AppsList(filteredApps)))),
           ],
     )));
   }
