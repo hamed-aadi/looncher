@@ -35,12 +35,10 @@ class Launcher extends StatelessWidget {
       ),
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      home: WillPopScope(
-        onWillPop: () async => false,
-        child: const SafeArea(child: Scaffold(
-            body: HomePage())))
+      home: SafeArea(child: Scaffold(
+          body: HomePage()))
     );
-  }
+}
 }
 
 class Apps {

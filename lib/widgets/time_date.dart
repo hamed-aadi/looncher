@@ -22,8 +22,7 @@ class _TimeDateState extends State<TimeDate> {
     _currentTime = DateTime.now();
 
     Timer.periodic(const Duration(seconds: 1), (timer) {
-        setState(
-          () {
+        setState(() {
             _currentTime = DateTime.now();
         });
     });
@@ -55,7 +54,7 @@ class _TimeDateState extends State<TimeDate> {
               padding: EdgeInsets.all(10),              
               child: Text(
                 " ${DateFormat('EEEE, dd MMMM').format(_currentTime)}",
-              style: const TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18),
           ))
   ])));
   }
