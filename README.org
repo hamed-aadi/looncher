@@ -4,12 +4,8 @@ launch0 V0.1
 An android launcher for personal use
 
 
-*** what it currently looks like
-
-[[./screenshots/v0/1.jpg]]
-[[./screenshots/v0/2.jpg]]
-
 *** ChangeLog
 **** V0.2
 - changed apps launcher to grid
+- neumorphic theme
 	
