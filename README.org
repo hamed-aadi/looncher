@@ -3,6 +3,7 @@ launch0 V0.1
 *** About
 An android launcher for personal use
 
+[[./Screenshot.jpg][Screenshot]]
 
 *** ChangeLog
 **** V0.2
