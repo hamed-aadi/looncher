@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
 
+ThemeData darkTheme = ThemeData(
+  scaffoldBackgroundColor: const Color(0xFF2E3236),
+  brightness: Brightness.dark,
+  colorScheme: const ColorScheme.dark()
+);
+
+
+ThemeData lightTheme = ThemeData(
+  brightness: Brightness.light,
+);
 
 BoxDecoration neuRecEmboss = BoxDecoration(
   color: const Color(0xFF1d2124),

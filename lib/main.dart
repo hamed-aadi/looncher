@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart';
 
+import 'theme.dart';
 import 'widgets/time_date.dart';
 import 'widgets/bottom_bar.dart';
 import 'widgets/mesial.dart';
@@ -27,18 +28,16 @@ class Launcher extends StatelessWidget {
         systemNavigationBarIconBrightness: Brightness.dark));
     return MaterialApp(
       title: 'Launcher',
-      darkTheme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFF2E3236),
-        brightness: Brightness.dark,
-        colorScheme: const ColorScheme.dark(
-        )
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      home: SafeArea(child: Scaffold(
-          body: HomePage()))
+      home: WillPopScope(
+        onWillPop: () async => false,
+        child: const SafeArea(child: Scaffold(
+            body: HomePage())))
     );
-}
+  }
 }
 
 class Apps {
