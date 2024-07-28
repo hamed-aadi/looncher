@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:looncher/data/apps.dart';
 
-DeviceApps deviceApps = DeviceApps();
+// DeviceApps deviceApps = DeviceApps();
 
 class TempApps extends StatefulWidget {
   const TempApps({super.key});
@@ -61,5 +61,3 @@ class _TempAppsState extends State<TempApps> {
     )]);
   }
 }
-
-

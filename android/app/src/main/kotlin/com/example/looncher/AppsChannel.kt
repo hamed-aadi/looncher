@@ -18,14 +18,36 @@ import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 
-/*
-import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.embedding.engine.plugins.activity.ActivityAware
-import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.PluginRegistry.Registrar
-*/
+fun mapApp(app: ApplicationInfo, packageManager: PackageManager): HashMap<String, Any?> {
+		val map = HashMap<String, Any?>()
+		map["name"] = packageManager.getApplicationLabel(app)
+    map["package_name"] = app.packageName
+		map["version"] = packageManager.getPackageInfo(app.packageName, 0).versionName
+		map["category"] = app.category
+		map["icon"] = drawableToByteArray(app.loadIcon(packageManager))
+		return map
+}
+
+fun drawableToByteArray(drawable: Drawable): ByteArray {
+		val bitmap: Bitmap = if (drawable is BitmapDrawable) {
+				drawable.bitmap ?: Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+		} else {
+				val createdBitmap = Bitmap.createBitmap(
+						drawable.intrinsicWidth.takeIf { it > 0 } ?: 1,
+						drawable.intrinsicHeight.takeIf { it > 0 } ?: 1,
+						Bitmap.Config.ARGB_8888
+				)
+				val canvas = Canvas(createdBitmap)
+				drawable.setBounds(0, 0, canvas.width, canvas.height)
+				drawable.draw(canvas)
+				createdBitmap
+		}
+
+		ByteArrayOutputStream().use { stream ->
+				bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+				return stream.toByteArray()
+		}
+}
 
 class AppsChannel(context: Context, messenger: BinaryMessenger) {
     private val channel = MethodChannel(messenger, "com.hamedaadi.looncher/apps")
@@ -39,16 +61,12 @@ class AppsChannel(context: Context, messenger: BinaryMessenger) {
                 }
 								"openApp" -> {
 										val packageName: String? = call.argument("package_name")
-										/* add animation left/right/..etc */
+										/* add arg for animation left/right/..etc */
 										openApp(packageName, context)
 								}
 								"uninstallApp" -> {
 										val packageName: String? = call.argument("package_name")
 										uninstallApp(packageName, context)
-								}
-								"forceUninstallApp" -> {
-										val packageName: String? = call.argument("package_name")
-										forceUninstallApp(packageName)
 								}
 								"openAppSettings" -> {
 										val packageName: String? = call.argument("package_name")
@@ -59,19 +77,6 @@ class AppsChannel(context: Context, messenger: BinaryMessenger) {
         }
     }
 
-		fun mapApp(
-				app: ApplicationInfo,
-				packageManager: PackageManager,
-		): HashMap<String, Any?> {
-				val map = HashMap<String, Any?>()
-				map["name"] = packageManager.getApplicationLabel(app)
-        map["package_name"] = app.packageName
-				map["version"] = packageManager.getPackageInfo(app.packageName, 0).versionName
-				map["category"] = app.category
-				map["icon"] = drawableToByteArray(app.loadIcon(packageManager))
-				return map
-		}
-		
 		fun getApps(context: Context): List<Map<String, Any?>> {
 				val packageManager = context.packageManager
 				var installedApps = packageManager.getInstalledApplications(0)
@@ -94,11 +99,6 @@ class AppsChannel(context: Context, messenger: BinaryMessenger) {
         context.startActivity(intent)
     }
 
-		fun forceUninstallApp(packageName: String?) {
-				val command = "pm uninstall $packageName"
-				Runtime.getRuntime().exec(command)
-		}
-
 		fun openAppSettings(packageName: String?, context: Context) {
 				val intent = Intent().apply {
             flags = FLAG_ACTIVITY_NEW_TASK
@@ -106,28 +106,6 @@ class AppsChannel(context: Context, messenger: BinaryMessenger) {
             data = Uri.fromParts("package", packageName, null)
         }
 				context.startActivity(intent)
-		}
-
-
-		fun drawableToByteArray(drawable: Drawable): ByteArray {
-				val bitmap: Bitmap = if (drawable is BitmapDrawable) {
-						drawable.bitmap ?: Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-				} else {
-						val createdBitmap = Bitmap.createBitmap(
-								drawable.intrinsicWidth.takeIf { it > 0 } ?: 1,
-								drawable.intrinsicHeight.takeIf { it > 0 } ?: 1,
-								Bitmap.Config.ARGB_8888
-						)
-						val canvas = Canvas(createdBitmap)
-						drawable.setBounds(0, 0, canvas.width, canvas.height)
-						drawable.draw(canvas)
-						createdBitmap
-				}
-
-				ByteArrayOutputStream().use { stream ->
-						bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-						return stream.toByteArray()
-				}
 		}
 
 }
