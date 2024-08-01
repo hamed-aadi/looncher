@@ -26,8 +26,10 @@ class AlarmsChannel(context: Context, messenger: BinaryMessenger) {
 				val alarmManager =
 						context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 				val nextAlarm = alarmManager.getNextAlarmClock()
-				val triggerTime = nextAlarm.getTriggerTime()
-				return triggerTime
+				if (nextAlarm == null) {
+						return null
+				} else {
+						return nextAlarm.getTriggerTime()
+				} 
 		}
-		
 }

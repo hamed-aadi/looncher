@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-
 class App {
   String name;
   String packageName;
@@ -36,7 +35,7 @@ class InstalledAppsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addApp(Map<String, dynamic> app) {
+  void addApp(Map app) {
     deviceApps
     ..add(App(
         name: app["name"],

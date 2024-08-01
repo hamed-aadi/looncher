@@ -3,12 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:provider/provider.dart';
 
 class AlarmsModel extends ChangeNotifier {
-  AlarmsModel() {
-    getAlarm();
-  }
-
+  
   final alarmsChannel = const MethodChannel('com.hamedaadi.looncher/alarms');
   String? remainingTime;
   

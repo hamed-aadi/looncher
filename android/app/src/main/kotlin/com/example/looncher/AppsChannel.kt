@@ -28,25 +28,26 @@ fun mapApp(app: ApplicationInfo, packageManager: PackageManager): HashMap<String
 		return map
 }
 
-fun drawableToByteArray(drawable: Drawable): ByteArray {
-		val bitmap: Bitmap = if (drawable is BitmapDrawable) {
-				drawable.bitmap ?: Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-		} else {
-				val createdBitmap = Bitmap.createBitmap(
-						drawable.intrinsicWidth.takeIf { it > 0 } ?: 1,
-						drawable.intrinsicHeight.takeIf { it > 0 } ?: 1,
-						Bitmap.Config.ARGB_8888
-				)
-				val canvas = Canvas(createdBitmap)
-				drawable.setBounds(0, 0, canvas.width, canvas.height)
-				drawable.draw(canvas)
-				createdBitmap
-		}
 
-		ByteArrayOutputStream().use { stream ->
-				bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-				return stream.toByteArray()
-		}
+fun drawableToByteArray(drawable: Drawable): ByteArray {
+    val bitmap = if (drawable is BitmapDrawable && drawable.bitmap != null) {
+        drawable.bitmap
+    } else {
+        Bitmap.createBitmap(
+            drawable.intrinsicWidth.takeIf { it > 0 } ?: 1,
+            drawable.intrinsicHeight.takeIf { it > 0 } ?: 1,
+            Bitmap.Config.ARGB_8888
+        ).apply {
+            val canvas = Canvas(this)
+            drawable.setBounds(0, 0, canvas.width, canvas.height)
+            drawable.draw(canvas)
+        }
+    }
+
+    return ByteArrayOutputStream().use { stream ->
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        stream.toByteArray()
+    }
 }
 
 class AppsChannel(context: Context, messenger: BinaryMessenger) {

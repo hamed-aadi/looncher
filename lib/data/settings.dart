@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
 
 import 'package:looncher/themes/you.dart';
+import 'package:looncher/widgets/hometile_time.dart';
+import 'package:looncher/widgets/hometile_approw.dart';
 
-class GlobalSettingsProvider extends ChangeNotifier {
-
-  var theme = You();
-  StarBorder clockShape = scallopBorder;
-  Color background = Colors.black;
-
-  void changeBackground() {
-    if (background == Colors.black) {
-      background == Colors.green;
-    } else {
-      background == Colors.black;
-    }
-    notifyListeners();
-  }
+class SettingsProvider extends ChangeNotifier {
   
-  void setTheme(dynamic theme) {
-    theme = theme;
-    notifyListeners();
-  }
+  var theme = You();
+
+  StarBorder clockShape = scallopBorder;
+  
+  // void setTheme(dynamic theme) {
+  //   theme = theme;
+  //   notifyListeners();
+  // }
 
   void setClockShape({required bool scallop}) {
     clockShape = (scallop ? scallopBorder : octagonBorder);
     notifyListeners();
   }
+
+  List<Widget> homeScreenWidgets = const [
+    TimeTile(),
+    Text("ayyyyyyyyyy"),
+    AppRowTile(),
+  ];
   
 }
 

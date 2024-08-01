@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 
@@ -40,14 +39,15 @@ class _TimeTileState extends State<TimeTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(20),
-      decoration: Provider.of<GlobalSettingsProvider>(context, listen: false)
-      .theme
-      .timeTileDecoration,
+      padding: EdgeInsets.all(10),
+      decoration: Provider.of<SettingsProvider>(context, listen: false)
+      .theme.timeTileDecoration(context),
       child: InkWell(
         // TODO: change settings default apps
         onTapDown: (_) => apps.openApp("com.android.deskclock"),
-        child: Row(children: [
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
             _Clock(currentTime),
             _Alarms(),
       ])),
@@ -62,10 +62,19 @@ class _Alarms extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 150,
-      child: Consumer<AlarmsModel>(
-        builder: (_, alarms, __) => Text(
-          alarms.remainingTime ?? "No Alarm is set",
-      )),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Alarms"),
+          Consumer<AlarmsModel>(
+            builder: (_, alarms, __) => Text(
+              alarms.remainingTime ?? "No Alarm is set",
+              style: TextStyle(color:
+                Theme.of(context).disabledColor
+              ),
+          ))
+        ]
+      ),
     );
   }
 }
@@ -80,20 +89,23 @@ class _Clock extends StatelessWidget {
       width: 200,
       height: 200,
       decoration: ShapeDecoration(
-        shape: Provider.of<GlobalSettingsProvider>(
+        color: Color(0xff1b1a1f),
+        shape: Provider.of<SettingsProvider>(
           context, listen: false).clockShape,
       ),
       child: CustomPaint(
         painter: _ClockPainter(dateTime),
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            margin: EdgeInsets.only(bottom: 12),
-            color: Colors.brown,
-            child: Text(
-              " ${dateTime.day}/${dateTime.month} ",
-              style: const TextStyle(fontSize: 10, color: Colors.white),
-    )))));
+        //   child: Align(
+        //     alignment: Alignment.bottomCenter,
+        //     child: Container(
+        //       margin: const EdgeInsets.only(bottom: 12),
+        //       // color: Colors.brown,
+        //       child: Text(
+        //         " ${dateTime.day} / ${dateTime.month} ",
+        //         style: const TextStyle(fontSize: 15, color: Colors.brown),
+        // )))
+      )
+    );
   }
 }
 
@@ -118,7 +130,7 @@ class _ClockPainter extends CustomPainter {
       hourHandLength,
       Paint()
       ..color = Colors.brown
-      ..strokeWidth = 11.0
+      ..strokeWidth = 18.0
       ..strokeCap = StrokeCap.round,
     );
     
@@ -129,13 +141,13 @@ class _ClockPainter extends CustomPainter {
       minuteHandLength,
       Paint()
       ..color = Colors.deepOrangeAccent
-      ..strokeWidth = 5.0
+      ..strokeWidth = 18.0
       ..strokeCap = StrokeCap.round,
     );
     
-    canvas.drawCircle(
-      center, radius * 0.04, Paint()..color = Color(0xFFba8349)
-    );
+    // canvas.drawCircle(
+    //   center, radius * 0.1, Paint()..color = Color(0xFFba8349)
+    // );
     
   }
 

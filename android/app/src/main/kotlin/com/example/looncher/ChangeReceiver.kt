@@ -10,49 +10,47 @@ import android.content.pm.PackageManager
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.BinaryMessenger
 
-class ChangeReceiver(messenger: BinaryMessenger): BroadcastReceiver() {
+class AppChangeReceiver(messenger: BinaryMessenger): BroadcastReceiver() {
 
-		val methodChannel = MethodChannel(
+		private val methodChannel = MethodChannel(
 				messenger,
-				"com.hamedaadi.looncher/appchange",
+				"com.hamedaadi.looncher/appReceivers",
 		)
 		
     override fun onReceive(context: Context, intent: Intent?) {
 				val action = intent?.action
 				val data = intent?.data
 				val packageManager = context.packageManager
+				
 				when (action) {
-						Intent.ACTION_PACKAGE_ADDED -> {
+						"android.intent.action.PACKAGE_ADDED" -> {
+								if (data != null) {
+										val packageName = data.encodedSchemeSpecificPart
+										val appInfo = packageManager.getApplicationInfo(packageName, 0)
+										val appMap = mapApp(appInfo, packageManager)
+										methodChannel.invokeMethod("onAppAdded", appMap)
+								} else {
+										println("fuck [33]")
+								}
+						}
+						"android.intent.action.PACKAGE_FULLY_REMOVED" -> {
 								methodChannel.invokeMethod(
-										"onAppInstalled",
-										mapApp(
-												packageManager.getApplicationInfo(
-														data!!.encodedSchemeSpecificPart,
-														0
-												),
-												packageManager
-										)
+										"onAppRemoved", data?.encodedSchemeSpecificPart,
 								)
 						}
-						Intent.ACTION_PACKAGE_REMOVED -> {
-								methodChannel.invokeMethod(
-										"onAppRemoved",
-										data?.encodedSchemeSpecificPart,
-								)
-						}
-						Intent.ACTION_AIRPLANE_MODE_CHANGED -> {
-								methodChannel.invokeMethod(
-										"airplane",
-										null
-								)
-						}
-						"android.intent.action.NEXT_ALARM_CLOCK_CHANGED" -> {
-								methodChannel.invokeMethod(
-										"alarmChange",
-										null
-								)
-						}
-						
 				}
+		}
+}
+
+class GenChangeReceiver(messenger: BinaryMessenger): BroadcastReceiver() {
+		private val methodChannel = MethodChannel(
+				messenger,
+				"com.hamedaadi.looncher/genReceivers",
+		)
+		
+		override fun onReceive(context: Context, intent: Intent?) {
+				// val action = intent?.action
+				// when (action) {}
+				methodChannel.invokeMethod("alarmChange", null)
 		}
 }

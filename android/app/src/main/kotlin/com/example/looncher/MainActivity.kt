@@ -19,28 +19,28 @@ class MainActivity: FlutterActivity() {
 		
 		override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
 				super.configureFlutterEngine(flutterEngine)
-				/* apps */
 				AppsChannel(this, flutterEngine.dartExecutor.binaryMessenger)
 
-				/*
-				 ACTION_POWER_CONNECTED
-				 ACTION_POWER_DISCONNECTED
-				 */
-				
-        val intentFilter = IntentFilter().apply {
-            addAction(Intent.ACTION_PACKAGE_ADDED)
-            addAction(Intent.ACTION_PACKAGE_REMOVED)
-						addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
-						addAction("android.intent.action.NEXT_ALARM_CLOCK_CHANGED")
-            addDataScheme("package")
+        val appIntentFilter = IntentFilter().apply {
+            addAction("android.intent.action.PACKAGE_ADDED")
+            addAction("android.intent.action.PACKAGE_FULLY_REMOVED")
+						addDataScheme("package")
         }
+
+				val genIntentFilter = IntentFilter().apply {
+						addAction("android.app.action.NEXT_ALARM_CLOCK_CHANGED")
+				}
 				
 				registerReceiver(
-						ChangeReceiver(flutterEngine.dartExecutor.binaryMessenger),
-						intentFilter,
+						AppChangeReceiver(flutterEngine.dartExecutor.binaryMessenger),
+						appIntentFilter,
 				)
 
-				/* alarms */
+				registerReceiver(
+						GenChangeReceiver(flutterEngine.dartExecutor.binaryMessenger),
+						genIntentFilter,
+				)
+				
 				AlarmsChannel(this, flutterEngine.dartExecutor.binaryMessenger)
 
 		}
