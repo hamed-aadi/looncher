@@ -31,9 +31,9 @@ class Launcher extends StatelessWidget {
       darkTheme: Provider.of<SettingsProvider>(context).theme.darkTheme,
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      home: const PopScope(
+      home: PopScope(
         canPop: false,
-        child: HomePage())
+        child: HomePage()),
     );
   }
 }

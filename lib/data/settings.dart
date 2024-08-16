@@ -1,13 +1,15 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import 'package:looncher/themes/you.dart';
-import 'package:looncher/widgets/hometile_time.dart';
-import 'package:looncher/widgets/hometile_approw.dart';
+import 'package:looncher/data/apps.dart';
+import 'package:looncher/widgets/view_apps.dart';
 
 class SettingsProvider extends ChangeNotifier {
   
   var theme = You();
-
   StarBorder clockShape = scallopBorder;
   
   // void setTheme(dynamic theme) {
@@ -17,14 +19,31 @@ class SettingsProvider extends ChangeNotifier {
 
   void setClockShape({required bool scallop}) {
     clockShape = (scallop ? scallopBorder : octagonBorder);
+    // presist
     notifyListeners();
   }
 
-  List<Widget> homeScreenWidgets = const [
-    TimeTile(),
-    Text("ayyyyyyyyyy"),
-    AppRowTile(),
-  ];
+  Widget upSlice = const AppsSlice(Axis.horizontal);
+  Widget downSlice = const AppsSlice(Axis.horizontal);
+  Widget leftSlice = const AppsSlice(Axis.vertical);
+  Widget rightSlice = const AppsSlice(Axis.vertical);
+
+  Widget upPage   = const AppsPage(MainAxisAlignment.start);
+  Widget downPage = const AppsPage(MainAxisAlignment.end);
+  Widget leftPage = const AppsPage(MainAxisAlignment.start);
+  Widget rightPage= const AppsPage(MainAxisAlignment.end);
+  
+  List<App> mainApps = [];
+
+  void addApp(App app) {
+    mainApps.add(app);
+    notifyListeners();
+  }
+
+  void removeApp(App app) {
+    mainApps.remove(app);
+    notifyListeners();
+  }
   
 }
 

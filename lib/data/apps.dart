@@ -31,6 +31,7 @@ class InstalledAppsModel extends ChangeNotifier {
   }
   
   void removeApp(String package) {
+    uninstallApp(package);
     deviceApps.removeWhere((app) => app.packageName == package);
     notifyListeners();
   }

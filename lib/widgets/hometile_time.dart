@@ -40,13 +40,15 @@ class _TimeTileState extends State<TimeTile> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10),
+      width: 300,
+      height: 300,
       decoration: Provider.of<SettingsProvider>(context, listen: false)
       .theme.timeTileDecoration(context),
       child: InkWell(
         // TODO: change settings default apps
         onTapDown: (_) => apps.openApp("com.android.deskclock"),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _Clock(currentTime),
             _Alarms(),
@@ -63,7 +65,7 @@ class _Alarms extends StatelessWidget {
     return Container(
       width: 150,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("Alarms"),
           Consumer<AlarmsModel>(
@@ -144,10 +146,6 @@ class _ClockPainter extends CustomPainter {
       ..strokeWidth = 18.0
       ..strokeCap = StrokeCap.round,
     );
-    
-    // canvas.drawCircle(
-    //   center, radius * 0.1, Paint()..color = Color(0xFFba8349)
-    // );
     
   }
 
