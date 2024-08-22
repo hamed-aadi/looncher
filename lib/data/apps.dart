@@ -17,6 +17,14 @@ class App {
       required this.version,
       required this.icon,
   });
+  
+  @override
+  bool operator ==(covariant App other) {
+    if (identical(this, other)) return true;
+    return name == other.name &&
+           packageName == other.packageName;
+  }
+  
 }
 
 class InstalledAppsModel extends ChangeNotifier {

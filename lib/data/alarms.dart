@@ -17,12 +17,12 @@ class AlarmsModel extends ChangeNotifier {
   
   void updateRemainingTime(int? timeUTC) {
     if (timeUTC == null) {
-      remainingTime = "No Alarm is set";
+      remainingTime = null;
     } else {
       var alarmTime = DateTime.fromMillisecondsSinceEpoch(timeUTC);
       Duration diffTime = alarmTime.difference(DateTime.now());
       remainingTime =
-      "Alarm in ${diffTime.inHours}H ${diffTime.inMinutes % 60}M";
+      "   Alarm in ${diffTime.inHours}H ${diffTime.inMinutes % 60}M  ";
     }
     notifyListeners();
   }

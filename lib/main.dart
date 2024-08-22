@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
 import 'package:looncher/data/settings.dart';
@@ -9,15 +10,15 @@ import 'package:looncher/data/apps.dart';
 import 'package:looncher/page_home.dart';
 
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => SettingsProvider()),
-        ChangeNotifierProvider(create: (context) => AlarmsModel()),
-        ChangeNotifierProvider(create: (context) => InstalledAppsModel()),
-      ],
-      child: const Launcher()
-  ));
+  initializeDateFormatting().then((_) => runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => SettingsProvider()),
+          ChangeNotifierProvider(create: (context) => AlarmsModel()),
+          ChangeNotifierProvider(create: (context) => InstalledAppsModel()),
+        ],
+        child: const Launcher(),
+  )));
 }
 
 class Launcher extends StatelessWidget {
@@ -31,10 +32,7 @@ class Launcher extends StatelessWidget {
       darkTheme: Provider.of<SettingsProvider>(context).theme.darkTheme,
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      home: PopScope(
-        canPop: false,
-        child: HomePage()),
-    );
+      home: HomePage());
   }
 }
 

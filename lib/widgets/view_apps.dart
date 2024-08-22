@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 
@@ -15,16 +16,16 @@ class AppsSlice extends StatelessWidget {
     return Consumer<SettingsProvider>(builder: (context, settings, _) {
         if (settings.mainApps.isEmpty) {
           return Container(
-            width: (axis == Axis.horizontal) ? 100: 50,
-            height: (axis == Axis.horizontal) ? 50: 100,
-            color: Colors.red,
-            child: Text("Empty")
+            width: (axis == Axis.horizontal) ? 200: 70,
+            height: (axis == Axis.horizontal) ? 70: 200,
+            color: Theme.of(context).cardColor,
+            child: Center(child: Text("Empty"))
           );
         } else {
           return Container(
-            width: (axis == Axis.horizontal) ? 100: 50,
-            height: (axis == Axis.horizontal) ? 50: 100,
-            color: Colors.grey,
+            width: (axis == Axis.horizontal) ? 200: 70,
+            height: (axis == Axis.horizontal) ? 70: 200,
+            color: Theme.of(context).cardColor,
             child: ListView.builder(
               itemCount: settings.mainApps.length,
               scrollDirection: axis,
@@ -50,73 +51,131 @@ class AppsPage extends StatefulWidget {
 }
 
 class _AppsPageState extends State<AppsPage> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+  
   @override
   Widget build(BuildContext context) {
-    return
-    SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop()),
-          title: const Text("All Applications"),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.sort_by_alpha), // allbool ? :
-              onPressed: () {},
-            ),
-          ],
-        ),
-        body: Container(
-          margin: EdgeInsets.all(30),
-          color: Colors.grey,
-          child: AlphabeticalAppGrid())
-    ));
+    return Scaffold(
+      // backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).cardColor.withOpacity(0.7),
+      body: Consumer<InstalledAppsModel>(
+        builder: (context, installedApps, __) {
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                backgroundColor: Colors.transparent,
+                floating: true,
+                pinned: true,
+                title: SearchAnchor.bar(
+                  viewBackgroundColor: Theme.of(context).canvasColor,
+                  barTrailing: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.toc),
+                    ),
+                  ],
+                  suggestionsBuilder: (BuildContext context, SearchController controller) {
+                    List<App> apps = Provider.of<InstalledAppsModel>(context, listen: false).deviceApps;
+                    final keyword = controller.text;
+                    final result = apps.where(
+                      (element) => element.name.toLowerCase().contains(keyword.toLowerCase())).toList();
+                    
+                    return List<ListTile>.generate(
+                      result.length,
+                      (index) => ListTile(
+                        minVerticalPadding: 15,
+                        leading: Image.memory(result[index].icon!),
+                        title: Text(result[index].name),
+                        onTap: () => openApp(result[index].packageName),
+                        onLongPress: () => openAppSettings(result[index].packageName),
+                      )
+                    );
+                  },  
+                )
+              ),
+              const SliverToBoxAdapter(child: SizedBox(height: 10)),
+              MainAppsGrid(installedApps.deviceApps),
+            ],
+          );
+        }
+      )
+    );
   }
 }
 
-class AlphabeticalAppGrid extends StatelessWidget {
-  const AlphabeticalAppGrid({super.key});
 
+// class SearchAppsGrid extends StatelessWidget {
+  
+// }
+
+
+class MainAppsGrid extends StatelessWidget {
+  final List<App> deviceApps;
+  
+  const MainAppsGrid(this.deviceApps, {super.key});
+  
   @override
   Widget build(BuildContext context) {
-    return Consumer<InstalledAppsModel>(
-      builder: (context, installedApps, _) {
-        return GridView.builder(
-          // gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          //   maxCrossAxisExtent: 10,
-          // ),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4),
-          itemCount: installedApps.deviceApps.length,
-          itemBuilder: (context, index) {
-            return AppWidget(installedApps.deviceApps[index]);
-          },
+    return SliverAnimatedGrid(
+      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+        crossAxisSpacing: 0,
+        mainAxisSpacing: 10,
+        childAspectRatio: 0.9,
+        maxCrossAxisExtent: Provider.of<SettingsProvider>(context, listen: true).iconSize,
+      ),
+      initialItemCount: deviceApps.length,
+      itemBuilder: (context, index, animation) {
+        return AppWidget(
+          deviceApps[index],
+          Provider.of<SettingsProvider>(context, listen: true).iconSize * 0.5
         );
       },
     );
   }
 }
-
 class AppWidget extends StatelessWidget {
   final App app;
-  const AppWidget(this.app, {super.key});
+  final double size;
+  const AppWidget(this.app, this.size, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100,
-      height: 200,
-      child: InkWell(
-        child: Column(children: [
-            Image.memory(app.icon!, width: 60, height: 60),
-            Text(app.name),
-        ]),
+      padding: EdgeInsets.symmetric(
+        horizontal: size * 0.3,
+      ),
+      child: GestureDetector(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.memory(app.icon!),//, width: size, height: size),
+            Text(
+              app.name,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              style: TextStyle(
+                overflow: TextOverflow.clip,
+                fontSize: 10
+              ),
+            ),
+          ]
+        ),
+        
         onTap: () => openApp(app.packageName),
+        
         onLongPress: () => showModalBottomSheet<void>(
           context: context,
           builder: (BuildContext context) {
@@ -125,7 +184,11 @@ class AppWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.memory(app.icon!, width: 100, height: 100),
+                  Image.memory(
+                    app.icon!,
+                    width: 100, height: 100,
+                    filterQuality: FilterQuality.high,
+                  ),
                   Text(app.name),
                   Divider(),
                   ElevatedButton(
@@ -144,7 +207,7 @@ class AppWidget extends StatelessWidget {
                     child: Text("Uninstall App")),
                   ElevatedButton(
                     onPressed: () {
-                      openAppSettings(app.name);
+                      openAppSettings(app.packageName);
                     },
                     child: Text("Open App info")),
                 ], // scrollable list of all launch methods

@@ -1,16 +1,16 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
 
 import 'package:looncher/themes/you.dart';
 import 'package:looncher/data/apps.dart';
 import 'package:looncher/widgets/view_apps.dart';
+import 'package:looncher/widgets/view_callendar.dart';
 
 class SettingsProvider extends ChangeNotifier {
   
   var theme = You();
-  StarBorder clockShape = scallopBorder;
+  StarBorder clockShape = octagonBorder;
+
+  double iconSize = 90;  //90 to 140
   
   // void setTheme(dynamic theme) {
   //   theme = theme;
@@ -23,12 +23,12 @@ class SettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Widget upSlice = const AppsSlice(Axis.horizontal);
+  Widget upSlice = const CalendarSlice();
   Widget downSlice = const AppsSlice(Axis.horizontal);
   Widget leftSlice = const AppsSlice(Axis.vertical);
   Widget rightSlice = const AppsSlice(Axis.vertical);
 
-  Widget upPage   = const AppsPage(MainAxisAlignment.start);
+  Widget upPage   = const CalendarPage();
   Widget downPage = const AppsPage(MainAxisAlignment.end);
   Widget leftPage = const AppsPage(MainAxisAlignment.start);
   Widget rightPage= const AppsPage(MainAxisAlignment.end);
@@ -36,6 +36,7 @@ class SettingsProvider extends ChangeNotifier {
   List<App> mainApps = [];
 
   void addApp(App app) {
+    if (mainApps.contains(app)) return;
     mainApps.add(app);
     notifyListeners();
   }

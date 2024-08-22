@@ -41,18 +41,15 @@ class _TimeTileState extends State<TimeTile> {
     return Container(
       padding: EdgeInsets.all(10),
       width: 300,
-      height: 300,
+      height: 400,
       decoration: Provider.of<SettingsProvider>(context, listen: false)
       .theme.timeTileDecoration(context),
-      child: InkWell(
-        // TODO: change settings default apps
-        onTapDown: (_) => apps.openApp("com.android.deskclock"),
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _Clock(currentTime),
-            _Alarms(),
-      ])),
+      child: Column(
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _Clock(currentTime),
+          _Alarms(),
+      ]),
     );
   }
 }
@@ -62,21 +59,23 @@ class _Alarms extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      child: Column(
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Alarms"),
-          Consumer<AlarmsModel>(
-            builder: (_, alarms, __) => Text(
-              alarms.remainingTime ?? "No Alarm is set",
-              style: TextStyle(color:
-                Theme.of(context).disabledColor
+    return Consumer<AlarmsModel>(
+      builder: (_, alarms, __) {
+        if (alarms.remainingTime == null) {
+          return Container();
+        } else {
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: 20),
+            child: Text(
+              alarms.remainingTime!,
+              style: TextStyle(
+                // color: Theme.of(context).disabledColor,
+                fontSize: 12,
               ),
-          ))
-        ]
-      ),
+            )
+          );
+        }
+      }
     );
   }
 }
@@ -87,27 +86,27 @@ class _Clock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 200,
-      height: 200,
+    return InkWell(
+      onTapDown: (_) => apps.openApp("com.android.deskclock"),
+      child: Container(
+      width: 250,
+      height: 250,
       decoration: ShapeDecoration(
-        color: Color(0xff1b1a1f),
+        color: Theme.of(context).cardColor,
         shape: Provider.of<SettingsProvider>(
           context, listen: false).clockShape,
+        shadows: [
+          BoxShadow(
+            offset: Offset(0,0),
+            color: Theme.of(context).shadowColor,
+            blurRadius: 10,
+            spreadRadius: -5,
+          )
+        ]
       ),
       child: CustomPaint(
-        painter: _ClockPainter(dateTime),
-        //   child: Align(
-        //     alignment: Alignment.bottomCenter,
-        //     child: Container(
-        //       margin: const EdgeInsets.only(bottom: 12),
-        //       // color: Colors.brown,
-        //       child: Text(
-        //         " ${dateTime.day} / ${dateTime.month} ",
-        //         style: const TextStyle(fontSize: 15, color: Colors.brown),
-        // )))
-      )
-    );
+        painter: _ClockPainter(dateTime))
+    ));
   }
 }
 
@@ -135,7 +134,6 @@ class _ClockPainter extends CustomPainter {
       ..strokeWidth = 18.0
       ..strokeCap = StrokeCap.round,
     );
-    
     canvas.drawLine(
       center,
       center +
