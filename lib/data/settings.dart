@@ -28,10 +28,10 @@ class SettingsProvider extends ChangeNotifier {
   Widget leftSlice = const AppsSlice(Axis.vertical);
   Widget rightSlice = const AppsSlice(Axis.vertical);
 
-  Widget upPage   = const CalendarPage();
-  Widget downPage = const AppsPage(MainAxisAlignment.end);
-  Widget leftPage = const AppsPage(MainAxisAlignment.start);
-  Widget rightPage= const AppsPage(MainAxisAlignment.end);
+  Widget upPage   = const CalendarPage(Axis.horizontal);
+  Widget downPage = AppsPage(Axis.horizontal, MainAxisAlignment.end);
+  Widget leftPage = AppsPage(Axis.vertical, MainAxisAlignment.start);
+  Widget rightPage= AppsPage(Axis.vertical, MainAxisAlignment.end);
   
   List<App> mainApps = [];
 

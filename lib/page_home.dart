@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'package:provider/provider.dart';
 
@@ -17,13 +18,13 @@ class HomePage extends StatelessWidget {
     Provider.of<InstalledAppsModel>(context, listen: false).getApps();
     return PopScope(
       canPop: false,
-      onPopInvoked: (_) {
+      onPopInvoked: (didpop) {
         vPageViewController.animateToPage(1,
           curve: Curves.bounceInOut,
-          duration: const Duration(milliseconds: 300));
+          duration: const Duration(milliseconds: 200));
         hPageViewController.animateToPage(1,
           curve: Curves.bounceInOut,
-          duration: const Duration(milliseconds: 300));
+          duration: const Duration(milliseconds: 200));
       },
       child: SafeArea(child: Consumer<SettingsProvider>(
           builder: (context, settings, _) {
@@ -59,8 +60,11 @@ class CenterWidget extends StatefulWidget {
   final PageController hPageViewController;
 
   const CenterWidget(
-    this.settings, this.vPageViewController, this.hPageViewController,
-    {super.key});
+    this.settings,
+    this.vPageViewController,
+    this.hPageViewController,
+    {super.key}
+  );
 
   @override
   State<CenterWidget> createState() => _CenterWidgetState();
@@ -117,8 +121,12 @@ class _CenterWidgetState extends State<CenterWidget> {
 
   @override
   void initState() {
-    vController = ScrollController(initialScrollOffset: 80);
-    hController = ScrollController(initialScrollOffset: 70);
+    vController = ScrollController();
+    hController = ScrollController();
+    SchedulerBinding.instance.addPostFrameCallback((_){
+        vController.jumpTo(vController.position.maxScrollExtent / 2);
+        hController.jumpTo(hController.position.maxScrollExtent / 2);
+    });
     super.initState();
   }
 
