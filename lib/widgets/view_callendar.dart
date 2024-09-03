@@ -15,7 +15,18 @@ class CalendarSlice extends StatelessWidget {
       Axis.horizontal,
       Container(
         // padding: const EdgeInsets.all(2.5),
-        decoration: Provider.of<SettingsProvider>(context).theme.sliceDecoration(context),
+        decoration: BoxDecoration(
+          color: Theme.of(context).canvasColor,
+          borderRadius: BorderRadius.circular(5),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              offset: Offset(0,1),
+              color: Theme.of(context).shadowColor,
+              blurRadius: 5,
+              spreadRadius: -2,
+            )
+          ]
+        ),
         child: TableCalendar(
           firstDay: DateTime(DateTime.now().year, DateTime.now().month),
           lastDay: DateTime(DateTime.now().year, DateTime.now().month + 1),
@@ -27,12 +38,12 @@ class CalendarSlice extends StatelessWidget {
           rowHeight: 40,
           daysOfWeekHeight: 20,
           daysOfWeekStyle: DaysOfWeekStyle(
-            weekdayStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-            weekendStyle: TextStyle(color: Theme.of(context).disabledColor),
+            weekdayStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+            weekendStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
           ),
           calendarStyle: CalendarStyle(
             todayDecoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).colorScheme.secondary,
               borderRadius: BorderRadius.circular(4),
             )
           ),
@@ -97,8 +108,8 @@ class CalendarPage extends StatelessWidget {
                   daysOfWeekHeight: 20,
                   holidayPredicate: getSalary,
                   daysOfWeekStyle: DaysOfWeekStyle(
-                    weekdayStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                    weekendStyle: TextStyle(color: Theme.of(context).disabledColor),
+                    weekdayStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+                    weekendStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                   ),
                   calendarStyle: CalendarStyle(
                     todayDecoration: BoxDecoration(
@@ -113,9 +124,9 @@ class CalendarPage extends StatelessWidget {
                       ]
                     ),
                     holidayTextStyle: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary),
+                      color: Theme.of(context).colorScheme.primary),
                     holidayDecoration: BoxDecoration(
-                      border: Border.all(color: Theme.of(context).colorScheme.onPrimary),
+                      border: Border.all(color: Theme.of(context).colorScheme.primary),
                       shape: BoxShape.circle,
                     ),
                   ),

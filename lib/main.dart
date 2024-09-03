@@ -1,38 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
+import 'package:looncher/data/theme.dart';
 import 'package:looncher/data/settings.dart';
 import 'package:looncher/data/alarms.dart';
 import 'package:looncher/data/apps.dart';
 import 'package:looncher/page_home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final light = await loadTheme(Brightness.light);
+  final dark = await loadTheme(Brightness.dark);
+  final apps = await getApps();
   initializeDateFormatting().then((_) => runApp(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (context) => SettingsProvider()),
-          ChangeNotifierProvider(create: (context) => AlarmsModel()),
-          ChangeNotifierProvider(create: (context) => InstalledAppsModel()),
+          ChangeNotifierProvider<MainProvider>(create: (_) => MainProvider(light, dark)),
+          ChangeNotifierProvider<InstalledAppsModel>(create: (_) => InstalledAppsModel(apps)),
+          ChangeNotifierProvider<SettingsProvider>(create: (context) => SettingsProvider()..loadSettings(context)),
+          ChangeNotifierProvider<AlarmsModel>(create: (_) => AlarmsModel()),
         ],
-        child: const Launcher(),
-  )));
+        child: Launcher(),
+      )
+    )
+  );
 }
 
-class Launcher extends StatelessWidget {
+class Launcher extends StatefulWidget {
   const Launcher({super.key});
-  
+
+  @override
+  State<Launcher> createState() => _LauncherState();
+}
+
+class _LauncherState extends State<Launcher> {
+
+  @override
+  void initState() {
+    super.initState();
+    initReceivers(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    initReceivers(context);
+    final main = Provider.of<MainProvider>(context);
     return MaterialApp(
-      theme: Provider.of<SettingsProvider>(context).theme.lightTheme,
-      darkTheme: Provider.of<SettingsProvider>(context).theme.darkTheme,
+      theme: main.lightTheme,
+      darkTheme: main.darkTheme,
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      home: HomePage());
+      home: HomePage(),
+    );
   }
 }
 

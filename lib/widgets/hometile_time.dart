@@ -38,17 +38,15 @@ class _TimeTileState extends State<TimeTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
+    return Container(           //TODO: FractionallySizedBox
+      padding: const EdgeInsets.all(10),
       width: 300,
       height: 400,
-      decoration: Provider.of<SettingsProvider>(context, listen: false)
-      .theme.timeTileDecoration(context),
       child: Column(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _Clock(currentTime),
-          _Alarms(),
+          const _Alarms(),
       ]),
     );
   }
@@ -59,7 +57,7 @@ class _Alarms extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AlarmsModel>(
+    return  Consumer<AlarmsModel>(
       builder: (_, alarms, __) {
         if (alarms.remainingTime == null) {
           return Container();
@@ -68,10 +66,7 @@ class _Alarms extends StatelessWidget {
             margin: EdgeInsets.symmetric(vertical: 20),
             child: Text(
               alarms.remainingTime!,
-              style: TextStyle(
-                // color: Theme.of(context).disabledColor,
-                fontSize: 12,
-              ),
+              style: TextStyle(fontSize: 12,),
             )
           );
         }
@@ -105,14 +100,15 @@ class _Clock extends StatelessWidget {
         ]
       ),
       child: CustomPaint(
-        painter: _ClockPainter(dateTime))
+        painter: _ClockPainter(dateTime, context))
     ));
   }
 }
 
 class _ClockPainter extends CustomPainter {
   DateTime dateTime;
-  _ClockPainter(this.dateTime);
+  BuildContext context;
+  _ClockPainter(this.dateTime, this.context);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -130,7 +126,7 @@ class _ClockPainter extends CustomPainter {
       Offset(cos(hourAngle - pi / 2), sin(hourAngle - pi / 2)) *
       hourHandLength,
       Paint()
-      ..color = Colors.brown
+      ..color = Theme.of(context).colorScheme.secondary
       ..strokeWidth = 18.0
       ..strokeCap = StrokeCap.round,
     );
@@ -140,7 +136,7 @@ class _ClockPainter extends CustomPainter {
       Offset(cos(minuteAngle - pi / 2), sin(minuteAngle - pi / 2)) *
       minuteHandLength,
       Paint()
-      ..color = Colors.deepOrangeAccent
+      ..color = Theme.of(context).colorScheme.primary
       ..strokeWidth = 18.0
       ..strokeCap = StrokeCap.round,
     );
@@ -152,4 +148,3 @@ class _ClockPainter extends CustomPainter {
     return (oldDelegate.dateTime != dateTime);
   }
 }
-

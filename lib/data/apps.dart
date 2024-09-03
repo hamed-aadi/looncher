@@ -24,24 +24,28 @@ class App {
     return name == other.name &&
            packageName == other.packageName;
   }
-  
+}
+
+Future<List<App>> getApps() async {
+  return _genApps(
+    await appsChannel.invokeMethod('getApps')
+  );
 }
 
 class InstalledAppsModel extends ChangeNotifier {
+
+  List<App> deviceApps;
   
-  List<App> deviceApps = [];
-  
-  Future<void> getApps() async {
-    deviceApps = _genApps(
-      await appsChannel.invokeMethod('getApps')
-    );
-    notifyListeners();
-  }
+  InstalledAppsModel(this.deviceApps);
   
   void removeApp(String package) {
     uninstallApp(package);
     deviceApps.removeWhere((app) => app.packageName == package);
     notifyListeners();
+  }
+
+  App appFromDevice(String package) {
+    return deviceApps.singleWhere((element) => element.packageName == package);
   }
 
   void addApp(Map app) {
@@ -71,6 +75,12 @@ List<App> _genApps(List<dynamic> appslist) {
   .toList()
   ..sort((a, b) => a.name.compareTo(b.name));
 }
+
+Future<App> appFromPackage(String package) async {
+  return await appsChannel.invokeMethod("appFromPackage", {"package_name": package});
+}
+
+
 
 Future<void> uninstallApp(String package) async {
   await appsChannel.invokeMethod("uninstallApp", {"package_name": package});

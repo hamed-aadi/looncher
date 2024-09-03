@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'data/settings.dart';
 import 'data/apps.dart';
 import 'widgets/hometile_time.dart';
+import 'page_settings.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -15,18 +16,14 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<InstalledAppsModel>(context, listen: false).getApps();
     return PopScope(
       canPop: false,
       onPopInvoked: (didpop) {
-        vPageViewController.animateToPage(1,
-          curve: Curves.bounceInOut,
-          duration: const Duration(milliseconds: 200));
-        hPageViewController.animateToPage(1,
-          curve: Curves.bounceInOut,
-          duration: const Duration(milliseconds: 200));
+        vPageViewController.jumpToPage(1);
+        hPageViewController.jumpToPage(1);
       },
-      child: SafeArea(child: Consumer<SettingsProvider>(
+      child: SafeArea(
+        child: Consumer<SettingsProvider>(
           builder: (context, settings, _) {
             return PageView(
               scrollDirection: Axis.vertical,
@@ -49,8 +46,10 @@ class HomePage extends StatelessWidget {
                 ]),
                 settings.downPage,
             ]);
-          },
-    )));
+          }
+        )
+      )
+    );
   }
 }
 
@@ -135,9 +134,11 @@ class _CenterWidgetState extends State<CenterWidget> {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       controller: vController,
+      physics: NeverScrollableScrollPhysics(),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         controller: hController,
+        physics: NeverScrollableScrollPhysics(),
         child: Column(children: [
             widget.settings.upSlice,
             Row(children: [
@@ -152,7 +153,9 @@ class _CenterWidgetState extends State<CenterWidget> {
                   onLongPress: () {
                     vCenter();
                     hCenter();
-                    // settings
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SettingsPage()));
                   },
                   onTap: () {
                     vCenter();
@@ -165,7 +168,8 @@ class _CenterWidgetState extends State<CenterWidget> {
                     (MediaQuery.of(context).padding.top +
                       MediaQuery.of(context).padding.bottom),
                     child: Center(child: TimeTile()),
-                )),
+                  )
+                ),
                 widget.settings.rightSlice,
             ]),
             widget.settings.downSlice,

@@ -60,9 +60,15 @@ class AppsChannel(context: Context, messenger: BinaryMessenger) {
 										val apps: List<Map<String, Any?>> = getApps(context)
                     result.success(apps)
                 }
+								"appFromPackage" -> {
+										val packageName: String? = call.argument("package_name")
+										val packageManager = context.packageManager
+										val appInfo = packageManager.getApplicationInfo("$packageName", 0)
+										val app = mapApp(appInfo, packageManager)
+										result.success(app)
+								}
 								"openApp" -> {
 										val packageName: String? = call.argument("package_name")
-										/* add arg for animation left/right/..etc */
 										openApp(packageName, context)
 								}
 								"uninstallApp" -> {
